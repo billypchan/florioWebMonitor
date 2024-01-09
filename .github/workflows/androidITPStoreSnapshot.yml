@@ -5,16 +5,16 @@ on:
     - cron: '0 0 * * *'  # Schedule daily at midnight UTC
   workflow_dispatch:
   push:
-    paths:
-      - '**/androidITPStoreSnapshot.yml'
     branches: [ "main" ]
+    # paths:
+    #   - '**/androidITPStoreSnapshot.yml'
 jobs:
   snapshot:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Set up Node.js
       uses: actions/setup-node@v3
@@ -28,7 +28,7 @@ jobs:
       run: node snapshot.js
 
     - name: Upload Snapshot to Artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: web-page-snapshot
         path: snapshot.png
