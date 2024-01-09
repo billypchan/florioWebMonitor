@@ -3,10 +3,7 @@ name: Web Page Snapshot
 on:
   schedule:
     - cron: '0 0 * * *'  # Schedule daily at midnight UTC
-  workflow_dispatch:
-  push:
-    paths:
-      - '**/androidITPStoreSnapshot.yml'
+
 jobs:
   snapshot:
     runs-on: ubuntu-latest
@@ -24,17 +21,8 @@ jobs:
       run: npm install puppeteer
 
     - name: Take Web Page Snapshot
-      run: |
-        const puppeteer = require('puppeteer');
+      run: node snapshot.js
 
-        (async () => {
-          const browser = await puppeteer.launch();
-          const page = await browser.newPage();
-          await page.goto('https://play.google.com/store/apps/details?id=app.florio.itp&hl=en&gl=US&pli=1');
-          await page.screenshot({ path: 'snapshot.png' });
-          await browser.close();
-        })();
-        
     - name: Upload Snapshot to Artifacts
       uses: actions/upload-artifact@v2
       with:
